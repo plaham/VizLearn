@@ -1,22 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { NavigationContainer  } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "./Screens/LoginScreen";
+import  HomeScreen from "./Screens/HomeScreen";
+import { LogBox } from "react-native"
 
-//npx expo start --tunnel
+import { useFonts } from "expo-font";
 
-export default function App() {
+
+LogBox.ignoreAllLogs(true)
+const Stack = createNativeStackNavigator();
+ function App() {
+
+  
+ 
+  let [fontsLoaded] = useFonts({
+    Bold: require("./assets/fonts/OpenSans-Bold.ttf"),
+    OpenSansLight: require("./assets/fonts/OpenSans-Light.ttf"),
+    OpenSansMedium: require("./assets/fonts/OpenSans-Medium.ttf"),
+    OpenSansRegular: require("./assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansSemiBold: require("./assets/fonts/OpenSans-SemiBold.ttf"),
+  });
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on yourww</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="home"
+        screenOptions={{
+          headerShown: false,
+        }}
+        
+      >
+        <Stack.Screen name="login" component={LoginScreen} />
+        <Stack.Screen name="home" component={HomeScreen} />
+        
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
