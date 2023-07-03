@@ -5,6 +5,7 @@ import { NavigationContainer  } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./Screens/LoginScreen";
 import  HomeScreen from "./Screens/HomeScreen";
+import SignUpScreen from "./Screens/SignUpScreen"
 import { LogBox } from "react-native"
 
 import { useFonts } from "expo-font";
@@ -27,13 +28,14 @@ const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="home"
+        initialRouteName="login"
         screenOptions={{
           headerShown: false,
         }}
         
       >
         <Stack.Screen name="login" component={LoginScreen} />
+        <Stack.Screen name="signup" component={SignUpScreen} />
         <Stack.Screen name="home" component={HomeScreen} />
         
       </Stack.Navigator>
