@@ -1,21 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 import * as React from "react";
-import { NavigationContainer  } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./Screens/LoginScreen";
-import  HomeScreen from "./Screens/HomeScreen";
-import { LogBox } from "react-native"
+import HomeScreen from "./Screens/HomeScreen";
+import NotificationScreen from "./Screens/NotificationScreen";
+import ChildrensStafListScreen from "./Screens/ChildrensStafListScreen";
+import { LogBox } from "react-native";
 
 import { useFonts } from "expo-font";
 
-
-LogBox.ignoreAllLogs(true)
+LogBox.ignoreAllLogs(true);
 const Stack = createNativeStackNavigator();
- function App() {
-
-  
- 
+function App() {
   let [fontsLoaded] = useFonts({
     Bold: require("./assets/fonts/OpenSans-Bold.ttf"),
     OpenSansLight: require("./assets/fonts/OpenSans-Light.ttf"),
@@ -27,15 +25,16 @@ const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="home"
+        initialRouteName="notification"
         screenOptions={{
           headerShown: false,
         }}
-        
       >
         <Stack.Screen name="login" component={LoginScreen} />
         <Stack.Screen name="home" component={HomeScreen} />
-        
+        <Stack.Screen name="notification" component={NotificationScreen} />
+        <Stack.Screen name="childrenstaf" component={ChildrensStafListScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
