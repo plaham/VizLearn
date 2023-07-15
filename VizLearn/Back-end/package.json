@@ -1,7 +1,7 @@
-{
-  "name": "buz",
+{ 
+  "name": "back-end",
   "version": "1.0.0",
-  "description": "buz",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "start": "npm run start:local",
