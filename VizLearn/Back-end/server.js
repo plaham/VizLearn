@@ -1,46 +1,29 @@
-'use strict'
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 8000;
+const connectDB = require("./db/connect");
+const Register = require("./model/register");
 
-require('module-alias/register')
-require('dotenv').config()
 
-const Glue = require('@hapi/glue')
-const Glob = require('glob')
-const serverConfig = require('./config/manifest')
+app.get('/register', async(req, res) => {
+  res.send("HEllo");
+  const registerUser = await Register.create({email:"harshthakkar@gmail.com"});
+});
 
-// this is the line we mention in manifest.js
-// relativeTo parameter should be defined here
-const options = {
-  ...serverConfig.options,
-  relativeTo: __dirname
-}
 
-// Start server
-const startServer = async () => {
+const start = async () => {
   try {
-    const server = await Glue.compose(
-      serverConfig.manifest,
-      options
-    )
+    await connectDB(
+      "mongodb+srv://harsh:root123@cluster0.czmockm.mongodb.net/Viz-Learn?retryWrites=true&w=majority"
+    );
 
-    const services = Glob.sync('server/services/*.js')
-    services.forEach(service => {
-      server.registerService(require(`${process.cwd()}/${service}`))
-    })
+    app.listen(port, function () {
+      console.log(`Express server listening on port ${port} `);
+    });
 
-    const role = ['admin', 'merchant', 'publisher']
-    role.forEach(r => {
-      const services = Glob.sync(`server/${r}/services/*.js`)
-      services.forEach(service => {
-        server.registerService(require(`${process.cwd()}/${service}`))
-      })
-    })
-
-    await server.start()
-    console.log(`Server listening on ${server.info.uri}`)
-  } catch (err) {
-    console.error(err)
-    process.exit(1)
+  } catch (error) {
+    console.log(error);
   }
-}
+};
 
-startServer()
+start();
