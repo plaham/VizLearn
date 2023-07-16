@@ -101,7 +101,33 @@ module.exports = {
             pre: API.getVideo.pre,
             handler: API.getVideo.handler
           }
-        }
+        },
+
+        {
+          method: 'POST',
+          path: '/logout',
+          config: {
+            auth: 'auth', // This route requires authentication. Adjust the strategy if needed.
+            plugins: {
+              policies: ['log.policy'],
+              'hapi-swagger': {
+                security: [
+                  {
+                    jwt: [] // Adjust if your authentication strategy uses a different token name.
+                  }
+                ]
+              }
+            },
+            tags: ['api', 'Authentication'],
+            description: 'Logout',
+            notes: 'Logout',
+            validate: API.logout.validate,
+            pre: API.logout.pre,
+            handler: API.logout.handler
+          }
+        },
+
+
       ])
     },
     version: require('../../package.json').version,
