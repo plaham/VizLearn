@@ -8,9 +8,7 @@
     "start:local": "nodemon server.js",
     "start:dev": "node server.js --development",
     "start:prod": "/root/.nvm/versions/node/v12.20.0/bin/node server.js --prod",
-    "test": "jest --coverage",
-    "precommit": "lint-staged",
-    "lint": "eslint --fix **/*.js ./"
+    "test": "jest --coverage"
   },
   "lint-staged": {
     "**/*.js": [
