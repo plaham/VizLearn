@@ -127,7 +127,23 @@ module.exports = {
           }
         },
 
-
+        // New register API
+        {
+          method: 'POST',
+          path: '/register',
+          config: {
+            auth: null, // This route doesn't require authentication. Adjust if needed.
+            plugins: {
+              policies: ['log.policy']
+            },
+            tags: ['api', 'Authentication'],
+            description: 'Register User',
+            notes: 'Register User',
+            validate: API.register.validate,
+            pre: API.register.pre,
+            handler: API.register.handler
+          }
+        }
       ])
     },
     version: require('../../package.json').version,
