@@ -85,6 +85,23 @@ module.exports = {
           }
         },
 
+        // New getVideo API
+        {
+          method: 'GET',
+          path: '/video/{videoId}',
+          config: {
+            auth: null, // This route doesn't require authentication. Adjust if needed.
+            plugins: {
+              policies: ['log.policy']
+            },
+            tags: ['api', 'Videos'],
+            description: 'Get Video by ID',
+            notes: 'Get Video by ID',
+            validate: API.getVideo.validate,
+            pre: API.getVideo.pre,
+            handler: API.getVideo.handler
+          }
+        }
       ])
     },
     version: require('../../package.json').version,
