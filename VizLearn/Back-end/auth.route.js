@@ -59,7 +59,32 @@ module.exports = {
             pre: API.me.pre,
             handler: API.me.handler
           }
-        }
+        },
+        
+        {
+          method: 'GET',
+          path: '/user-details/{userId}',
+          config: {
+            auth: 'auth', // This route requires authentication. Adjust the strategy if needed.
+            plugins: {
+              policies: ['log.policy'],
+              'hapi-swagger': {
+                security: [
+                  {
+                    jwt: [] // Adjust if your authentication strategy uses a different token name.
+                  }
+                ]
+              }
+            },
+            tags: ['api', 'Users'],
+            description: 'Get User Details',
+            notes: 'Get User Details',
+            validate: API.getUserDetails.validate,
+            pre: API.getUserDetails.pre,
+            handler: API.getUserDetails.handler
+          }
+        },
+
       ])
     },
     version: require('../../package.json').version,
