@@ -28,7 +28,7 @@ const CoursePage = () => {
                 <Text style={styles.heading}>Course Name</Text>
                 <div style={styles.circle}>
                     <MaterialIcons
-                        name='pregnant-woman'
+                        name='user'
                         size={32}
                         style={styles.profilePic}
                     />
