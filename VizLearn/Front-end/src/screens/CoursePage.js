@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const CoursePage = () => {
     const [selectedModule, setSelectedModule] = useState(1);
@@ -27,11 +28,7 @@ const CoursePage = () => {
             <View style={styles.profile}>
                 <Text style={styles.heading}>Course Name</Text>
                 <div style={styles.circle}>
-                    <MaterialIcons
-                        name='user'
-                        size={32}
-                        style={styles.profilePic}
-                    />
+                    <AntDesign name="user" size={24} color="black" style={styles.profilePic} />
                 </div>
 
             </View>
