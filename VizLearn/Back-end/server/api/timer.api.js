@@ -42,7 +42,7 @@ module.exports = {
         timer.endTimmeNumber = new Date().getTime()
         const date2 = moment(new Date())
         const date1 = moment(timer.startTime)
-        timer.differenceNumber = date2.diff(date1, 'minutes');
+        timer.differenceNumber = date2.diff(date1, 'seconds');
         timer.differenceTimeHour = new Date(timer.differenceNumber * 1000).toISOString().substring(11, 16)
         return await timer.save()
       } else {
