@@ -7,7 +7,8 @@ import LoginScreen from "./Screens/LoginScreen";
 import HomeScreen from "./Screens/HomeScreen";
 import NotificationScreen from "./Screens/NotificationScreen";
 import ChildrensStafListScreen from "./Screens/ChildrensStafListScreen";
-import { LogBox } from "react-native";
+import SignUpScreen from "./Screens/SignUpScreen"
+import { LogBox } from "react-native"
 
 import { useFonts } from "expo-font";
 
@@ -25,12 +26,13 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="notification"
+        initialRouteName="login"
         screenOptions={{
           headerShown: false,
         }}
       >
         <Stack.Screen name="login" component={LoginScreen} />
+        <Stack.Screen name="signup" component={SignUpScreen} />
         <Stack.Screen name="home" component={HomeScreen} />
         <Stack.Screen name="notification" component={NotificationScreen} />
         <Stack.Screen name="childrenstaf" component={ChildrensStafListScreen} />
