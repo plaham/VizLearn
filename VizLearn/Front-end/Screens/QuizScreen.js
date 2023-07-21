@@ -1,4 +1,3 @@
-// QuizScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
@@ -16,8 +15,8 @@ const quizData = [
     correctAnswer: 'Lion',
   },
   {
-    question: 'Who is the best professor?',
-    options: ['Dr. Usama Mir', 'Dr. Usama Mir', 'Dr. Usama Mir', 'Dr. Usama Mir'],
+    question: 'Which country hosted the 2016 Summer Olympics?',
+    options: ['Brazil', 'China', 'USA', 'Russia'],
     correctAnswer: 'Brazil',
   },
   {
@@ -33,12 +32,23 @@ const quizData = [
 ];
 
 const QuizScreen = () => {
+  const [level, setLevel] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120); // 2 minutes (120 seconds) timer
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
 
-  // Function to handle the quiz timer
+  useEffect(() => {
+    if (level) {
+      setCurrentQuestionIndex(0);
+      setScore(0);
+      setShowResult(false);
+      setTimeLeft(120); // Reset timer to 2 minutes on level selection
+      setSelectedAnswers([]); // Reset selected answers
+    }
+  }, [level]);
+
   useEffect(() => {
     let interval;
     if (!showResult && timeLeft > 0) {
@@ -61,6 +71,11 @@ const QuizScreen = () => {
       return; // Prevent handling answer when currentQuestion is undefined
     }
 
+    setSelectedAnswers((prevSelected) => [
+      ...prevSelected,
+      { questionIndex: currentQuestionIndex, selectedAnswer },
+    ]);
+
     if (selectedAnswer === currentQuestion.correctAnswer) {
       setScore((prevScore) => prevScore + 1);
     }
@@ -72,11 +87,16 @@ const QuizScreen = () => {
     }
   };
 
+  const handleLevelSelect = (selectedLevel) => {
+    setLevel(selectedLevel);
+  };
+
   const handleRestartQuiz = () => {
     setCurrentQuestionIndex(0);
     setScore(0);
     setShowResult(false);
     setTimeLeft(120); // Reset timer to 2 minutes on restart
+    setSelectedAnswers([]); // Reset selected answers
   };
 
   const renderQuestion = () => {
@@ -92,12 +112,21 @@ const QuizScreen = () => {
           <TouchableOpacity
             key={index}
             onPress={() => handleAnswer(option)}
-            style={styles.optionButton}
+            style={[
+              styles.optionButton,
+              option === currentQuestion.correctAnswer && styles.correctOption,
+              selectedAnswers.some(
+                (item) =>
+                  item.questionIndex === currentQuestionIndex && item.selectedAnswer === option
+              ) && styles.selectedOption,
+            ]}
           >
             <Text style={styles.optionText}>{option}</Text>
           </TouchableOpacity>
         ))}
-        <Text style={styles.timer}>Time Left: {timeLeft} seconds</Text>
+        <View style={styles.timerContainer}>
+          <Text style={styles.timerText}>Time Left: {timeLeft} seconds</Text>
+        </View>
       </View>
     );
   };
@@ -112,6 +141,12 @@ const QuizScreen = () => {
       feedback = 'Keep practicing. You can do better!';
     }
 
+    const correctAnswers = quizData.map((question, index) => (
+      <Text key={index} style={styles.correctAnswerText}>
+        {`${index + 1}. ${question.correctAnswer}`}
+      </Text>
+    ));
+
     return (
       <View style={styles.quizContainer}>
         <Text style={styles.resultText}>Quiz Complete!</Text>
@@ -120,13 +155,42 @@ const QuizScreen = () => {
         <TouchableOpacity onPress={handleRestartQuiz} style={styles.restartButton}>
           <Text style={styles.restartButtonText}>Restart Quiz</Text>
         </TouchableOpacity>
+        <View style={styles.correctAnswersContainer}>
+          <Text style={styles.correctAnswersTitle}>Correct Answers:</Text>
+          {correctAnswers}
+        </View>
       </View>
     );
   };
 
+  const renderLevelSelection = () => (
+    <View style={styles.quizContainer}>
+      <Text style={styles.levelText}>Select Quiz Level:</Text>
+      <TouchableOpacity
+        style={[styles.levelButton, level === 'easy' && styles.selectedLevel]}
+        onPress={() => handleLevelSelect('easy')}
+      >
+        <Text style={styles.levelButtonText}>Easy</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.levelButton, level === 'medium' && styles.selectedLevel]}
+        onPress={() => handleLevelSelect('medium')}
+      >
+        <Text style={styles.levelButtonText}>Medium</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.levelButton, level === 'hard' && styles.selectedLevel]}
+        onPress={() => handleLevelSelect('hard')}
+      >
+        <Text style={styles.levelButtonText}>Hard</Text>
+      </TouchableOpacity>
+      {level && renderQuestion()}
+    </View>
+  );
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {showResult ? renderResult() : renderQuestion()}
+      {showResult ? renderResult() : renderLevelSelection()}
     </ScrollView>
   );
 };
@@ -142,6 +206,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
+  },
+  levelText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  levelButton: {
+    backgroundColor: '#f1f1f1',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  levelButtonText: {
+    fontSize: 18,
+  },
+  selectedLevel: {
+    backgroundColor: '#2196F3',
   },
   question: {
     fontSize: 20,
@@ -160,7 +243,16 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 16,
   },
-  timer: {
+  correctOption: {
+    backgroundColor: '#f1f1f1', // Green color for correct answer
+  },
+  selectedOption: {
+    backgroundColor: '#FF9800', // Orange color for selected answer
+  },
+  timerContainer: {
+    marginTop: 10,
+  },
+  timerText: {
     fontSize: 16,
     marginBottom: 10,
   },
@@ -180,13 +272,27 @@ const styles = StyleSheet.create({
   },
   restartButton: {
     backgroundColor: '#2196F3',
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     borderRadius: 10,
+    marginBottom: 20,
   },
   restartButtonText: {
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
+  },
+  correctAnswersContainer: {
+    marginTop: 20,
+  },
+  correctAnswersTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  correctAnswerText: {
+    fontSize: 16,
+    marginBottom: 5,
   },
 });
 
