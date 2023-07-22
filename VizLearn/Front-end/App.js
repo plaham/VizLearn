@@ -8,6 +8,7 @@ import HomeScreen from "./Screens/HomeScreen";
 import NotificationScreen from "./Screens/NotificationScreen";
 import ChildrensStafListScreen from "./Screens/ChildrensStafListScreen";
 import SignUpScreen from "./Screens/SignUpScreen"
+import CourseContent from "./Screens/CourseContentScreen";
 import { LogBox } from "react-native"
 
 import { useFonts } from "expo-font";
@@ -36,6 +37,7 @@ function App() {
         <Stack.Screen name="home" component={HomeScreen} />
         <Stack.Screen name="notification" component={NotificationScreen} />
         <Stack.Screen name="childrenstaf" component={ChildrensStafListScreen} />
+        <Stack.Screen name="coursecontent" component={CourseContent} />        
 
       </Stack.Navigator>
     </NavigationContainer>
